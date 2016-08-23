@@ -6,7 +6,7 @@
  */
 
 
-void init_bss() {
+void init_sections() {
 	extern char _bss_start, _bss_end;
 	memset(&_bss_start, 0, &_bss_end - &_bss_start);
 	extern char _sdata, _edata, _etext;

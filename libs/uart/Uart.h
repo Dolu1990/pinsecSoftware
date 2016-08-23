@@ -28,7 +28,7 @@ public:
 	}
 
 	bool isWriteFull(){
-		return (base[1] >> 16) == 0;
+		return writeAvailability() == 0;
 	}
 
 	void write(uint32_t data){

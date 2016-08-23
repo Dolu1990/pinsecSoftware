@@ -18,11 +18,11 @@ OUTPUT_ARCH( "riscv" )
 /*----------------------------------------------------------------------*/
 
 MEMORY {
-  rom (RX) : ORIGIN = 0x00000000, LENGTH = 16K
-  ram (W!RX) : ORIGIN = 0x04000000, LENGTH = 16K
+  rom (RX) : ORIGIN = 0x00000000, LENGTH = 64K
+  ram (W!RX) : ORIGIN = 0x04000000, LENGTH = 32K
 }
-_stack_size = 2k;
-_heap_size = 4k;
+_stack_size = 4k;
+_heap_size = 8k;
 
 SECTIONS /*TODO don't initialize useless things,  restore literal loading that use 2 instruction in place of rom word */
 {
@@ -65,7 +65,7 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
   _ctors_end = _ctors_start + SIZEOF(.ctors);
   
   
-   .data : AT (_etext) /* ADDR(.text) + SIZEOF ( .text )     AT (_etext) */
+   .data : AT (_ctors_end) /* ADDR(.text) + SIZEOF ( .text )     AT (_etext) */
    {
       . = ALIGN(4);
       _sdata = .;

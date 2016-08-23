@@ -11,10 +11,21 @@
 UartCtrl uartCtrl = UartCtrl(UART_CTRL_BASE);
 
 volatile uint32_t phase = 0;
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 int main() {
 
 	uartCtrl.setClockDivider(4);
 	uartCtrl.setFrameConfig(8,NONE,ONE);
+	uartCtrl.setReadInterruptEnable(0);
+	uartCtrl.setWriteInterruptEnable(0);
+
+
 
 
 	testCom::writeValue(uartCtrl.writeAvailability());
@@ -49,9 +60,6 @@ int main() {
 	testCom::writeValue(0x1234567B);
 }
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 void irqCpp(uint32_t irq){
 	testCom::writeValue(irq);

@@ -60,7 +60,7 @@ _start:
 
   la sp, _stack_start
 
-  jal ra, init_bss
+  jal ra, init_sections
   jal ra, main
 
 
