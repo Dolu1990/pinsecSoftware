@@ -37,7 +37,7 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
     PROVIDE(stext = .);
     KEEP(*(.isr_vector))
     build/src/crt.o(.text)
-    *(.text .text.*)        
+    *(.text .text.*)            
     *(.rodata .rodata.*)        
     *(.srodata .srodata.*)         
     *(.eh_frame)       
@@ -54,7 +54,17 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
 		*(.fini)  
    } > rom
 
-
+  /* .ctors => Contains a list of global constructor pointers */
+  .ctors ALIGN(4) : {
+    _ctors_load_start = .;
+    _ctors_start = .;
+    KEEP(*(.init_array*))
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*(.ctors))
+  } > rom
+  _ctors_end = _ctors_start + SIZEOF(.ctors);
+  
+  
    .data : AT (_etext) /* ADDR(.text) + SIZEOF ( .text )     AT (_etext) */
    {
       . = ALIGN(4);
@@ -69,7 +79,7 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
 
 
   .bss (NOLOAD) : {
-	. = ALIGN(4);
+  . = ALIGN(4);
       /* This is used by the startup in order to initialize the .bss secion */
       _bss_start = .;
       *(.sbss .sbss.*)

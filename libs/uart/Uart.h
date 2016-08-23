@@ -36,10 +36,32 @@ public:
 		base[0] = data;
 	}
 
+	uint32_t readOccupancy(){
+		return base[1] >> 24;
+	}
+	uint32_t writeAvailability(){
+		return (base[1] >> 16) & 0xFF;
+	}
 	uint32_t read(){
 		uint32_t value;
-		while(((value = base[0]) & 0xFFFF0000) == 0);
-		return value;
+		while(((value = base[0]) & 0x00010000) == 0);
+		return value & 0xFFFF;
+	}
+
+	void setWriteInterruptEnable(bool enable){
+		base[1] = enable ? (base[1] | 1) : (base[1] & ~1);
+	}
+
+	void setReadInterruptEnable(bool enable){
+		base[1] = enable ? (base[1] | 2) : (base[1] & ~2);
+	}
+
+	bool getWriteInterrupt(){
+		return (base[1] & 0x100) != 0;
+	}
+
+	bool getReadInterrupt(){
+		return (base[1] & 0x200) != 0;
 	}
 
 	volatile uint32_t* base;

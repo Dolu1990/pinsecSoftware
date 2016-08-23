@@ -4,3 +4,7 @@
 *.bin
 *.asm
 *.map
+
+.cproject
+.project
+*.xml
