@@ -18,7 +18,7 @@ OUTPUT_ARCH( "riscv" )
 /*----------------------------------------------------------------------*/
 
 MEMORY {
-  rom (RX) : ORIGIN = 0x00000000, LENGTH = 64K
+  rom (RX) : ORIGIN = 0x00000000, LENGTH = 96K
   ram (W!RX) : ORIGIN = 0x04000000, LENGTH = 32K
 }
 _stack_size = 4k;
@@ -64,8 +64,8 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
   } > rom
   _ctors_end = _ctors_start + SIZEOF(.ctors);
   
-  
-   .data : AT (_ctors_end) /* ADDR(.text) + SIZEOF ( .text )     AT (_etext) */
+  _copy_section = _ctors_start + SIZEOF(.ctors);
+   .data : AT (_copy_section) /* ADDR(.text) + SIZEOF ( .text )     AT (_etext) */
    {
       . = ALIGN(4);
       _sdata = .;

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-
+#include <stdlib.h>
 #include <TestCom.h>
 #include <Uart.h>
 
@@ -19,7 +19,9 @@ extern "C" {
 
 
 int main() {
-
+	//char *yolo = (char*)malloc (100);
+	char yolo[100];
+	sprintf(yolo,"miaou %d %f",42,3.14f);
 	uartCtrl.setClockDivider(4);
 	uartCtrl.setFrameConfig(8,NONE,ONE);
 	uartCtrl.setReadInterruptEnable(0);

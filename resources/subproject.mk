@@ -30,7 +30,7 @@ OBJS := $(OBJS:.S=.o)
 OBJS := $(addprefix $(OBJDIR)/,$(OBJS))
 
 
-all: $(OBJDIR)/$(PROJ_NAME).elf $(OBJDIR)/$(PROJ_NAME).hex $(OBJDIR)/$(PROJ_NAME).bin $(OBJDIR)/$(PROJ_NAME).asm
+all: $(OBJDIR)/$(PROJ_NAME).elf $(OBJDIR)/$(PROJ_NAME).hex $(OBJDIR)/$(PROJ_NAME).bin $(OBJDIR)/$(PROJ_NAME).asm $(OBJDIR)/$(PROJ_NAME).v
 
 $(OBJDIR)/%.elf: $(OBJS) | $(OBJDIR)
 	$(RISCV_CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
@@ -40,6 +40,11 @@ $(OBJDIR)/%.elf: $(OBJS) | $(OBJDIR)
 
 %.bin: %.elf
 	$(RISCV_OBJCOPY) -O binary $^ $@
+	
+%.v: %.elf
+	$(RISCV_OBJCOPY) -O verilog $^ $@
+	
+	
 	
 %.asm: %.elf
 	$(RISCV_OBJDUMP) -S -d $^ > $@
@@ -64,6 +69,7 @@ clean:
 	rm -f $(OBJDIR)/$(PROJ_NAME).hex
 	rm -f $(OBJDIR)/$(PROJ_NAME).bin
 	rm -f $(OBJDIR)/$(PROJ_NAME).map
+	rm -f $(OBJDIR)/$(PROJ_NAME).v
 	rm -f $(OBJDIR)/$(PROJ_NAME).asm
 	find $(OBJDIR) -type f -name '*.o' -print0 | xargs -0 -r rm
 
