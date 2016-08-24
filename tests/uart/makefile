@@ -5,8 +5,8 @@ MULDIV=no
 
 
 SRCS = 	$(wildcard src/*.c) \
-	$(wildcard src/*.cpp)  \
-	$(wildcard src/*.S)
+				$(wildcard src/*.cpp)  \
+				$(wildcard src/*.S)
 
 INC += -I../../libs/test/
 INC += -I../../libs/uart/

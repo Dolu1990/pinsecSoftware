@@ -97,6 +97,11 @@ trap_entry:
   .align 9 
   .globl _start
 _start:
+  nop
+  nop
+  nop
+  nop
+  nop
   li  x10,0xFF
   writetIrqMask x10
 

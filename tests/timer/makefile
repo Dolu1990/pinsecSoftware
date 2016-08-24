@@ -1,12 +1,7 @@
-PROJ_NAME=dhrystone
+PROJ_NAME=timer
 DEBUG=no
-BENCH=true
-MULDIV=yes
-
-CFLAGS += -std=gnu99 -ffast-math -fno-common -funsigned-char -fno-inline -fno-builtin-printf 
-LDFLAGS += -lc
-
-CFLAGS +=  -DPREALLOCATE=1 -DHOST_DEBUG=0 -DMSC_CLOCK 
+BENCH=no
+MULDIV=no
 
 
 SRCS = 	$(wildcard src/*.c) \
@@ -15,8 +10,8 @@ SRCS = 	$(wildcard src/*.c) \
 
 INC += -I../../libs/
 INC += -I../../libs/test/
-INC += -I../../libs/uart/
 INC += -I../../libs/timer/
+INC += -I../../libs/interrupt/
 
 LDSCRIPT = ../../resources/linker.ld
 

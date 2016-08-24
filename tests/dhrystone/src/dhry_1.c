@@ -47,7 +47,9 @@ Enumeration     Func_1 ();
 struct tms      time_info;
 
                 /* see library function "times" */
-#define Too_Small_Time (HZ/2000)
+
+
+#define Too_Small_Time (CORE_HZ/2000)
                 /* Measurements should last at least about 2 seconds */
 #endif
 #ifdef TIME
@@ -275,8 +277,8 @@ main2 ()
     Dhrystones_Per_Second = (float) Number_Of_Runs / (float) User_Time;
 #else
     Microseconds = (float) User_Time * Mic_secs_Per_Second 
-                        / ((float) HZ * ((float) Number_Of_Runs));
-    Dhrystones_Per_Second = ((float) HZ * (float) Number_Of_Runs)
+                        / ((float) CORE_HZ * ((float) Number_Of_Runs));
+    Dhrystones_Per_Second = ((float) CORE_HZ * (float) Number_Of_Runs)
                         / (float) User_Time;
 #endif
     printf ("Microseconds for one run through Dhrystone: ");

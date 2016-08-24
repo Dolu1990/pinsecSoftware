@@ -36,7 +36,7 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
     _text = .;
     PROVIDE(stext = .);
     KEEP(*(.isr_vector))
-    build/src/crt.o(.text)
+    *crt.o(.text)
     *(.text .text.*)            
     *(.rodata .rodata.*)        
     *(.srodata .srodata.*)         

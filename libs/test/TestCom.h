@@ -8,7 +8,7 @@
 #ifndef TESTCOM_H_
 #define TESTCOM_H_
 
-#define TEST_COM_BASE ((volatile uint32_t*)(0xF00FFF00))
+#include "../Pinsec.h"
 
 namespace testCom{
 	void writeValue(uint32_t value){

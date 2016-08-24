@@ -24,5 +24,17 @@ int main() {
 }
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void irqCpp(uint32_t irq){
+
+}
+
+#ifdef __cplusplus
+}
+#endif
+
 
 

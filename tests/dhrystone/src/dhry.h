@@ -352,6 +352,7 @@
 #endif
                 /* Use times(2) time function unless    */
                 /* explicitly defined otherwise         */
+#import <Pinsec.h>
 
 #ifdef MSC_CLOCK
 #undef HZ
