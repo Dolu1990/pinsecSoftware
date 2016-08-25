@@ -19,7 +19,8 @@ OUTPUT_ARCH( "riscv" )
 
 MEMORY {
   rom (RX) : ORIGIN = 0x00000000, LENGTH = 96K
-  ram (W!RX) : ORIGIN = 0x04000000, LENGTH = 32K
+  ram (W!RX) : ORIGIN = 0x40000000, LENGTH = 64M
+  /*ram (W!RX) : ORIGIN = 0x04000000, LENGTH = 32K*/
 }
 _stack_size = 4k;
 _heap_size = 8k;

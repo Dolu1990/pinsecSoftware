@@ -30,6 +30,8 @@ int main() {
 	uartCtrl.setWriteInterruptEnable(0);
 
 	main2();
+
+	testCom::writeValue(0x42);
 }
 
 
