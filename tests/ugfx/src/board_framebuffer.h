@@ -20,7 +20,7 @@
 		// TODO: Initialize your frame buffer device here
 
 		// TODO: Set the details of the frame buffer
-		int reductBy = 1;
+		int reductBy = 2;
 		int vgaWidth = 640;
 		int vgaHeight = 480;
 		g->g.Width = vgaWidth/reductBy;
@@ -28,9 +28,9 @@
 		g->g.Backlight = 100;
 		g->g.Contrast = 50;
 		fbi->linelen = vgaWidth * sizeof(LLDCOLOR_TYPE);				// bytes per row
-		fbi->pixels = 0x41000000/*
+		fbi->pixels = 0x41000000
 				+ (vgaWidth-g->g.Width)/2 * sizeof(LLDCOLOR_TYPE)
-				+ (vgaHeight-g->g.Height)/2*fbi->linelen*/;												// pointer to the memory frame buffer
+				+ (vgaHeight-g->g.Height)/2*fbi->linelen;												// pointer to the memory frame buffer
 	}
 
 	#if GDISP_HARDWARE_FLUSH

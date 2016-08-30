@@ -24,12 +24,17 @@ public:
 		this->base = base;
 	}
 
+	bool isBusy(){
+		return (base[0] & 2) != 0;
+	}
+
 	void run(){
 		base[0] = 1;
 	}
 
 	void stop(){
 		base[0] = 0;
+		while(isBusy());
 	}
 
 	//in byte

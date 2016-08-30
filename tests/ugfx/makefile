@@ -1,5 +1,5 @@
 PROJ_NAME=ugfx
-DEBUG=no
+DEBUG=yes
 BENCH=no
 MULDIV=yes
 
