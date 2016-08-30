@@ -90,6 +90,12 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
       . = ALIGN(4);        
       _bss_end = .;
   } > ram
+  
+  .noinit (NOLOAD) : {
+      . = ALIGN(4);
+      *(.noinit .noinit.*)
+      . = ALIGN(4);    
+  } > ram
 
 
 	._user_heap (NOLOAD):
