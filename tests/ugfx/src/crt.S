@@ -15,6 +15,15 @@ custom0 \rd,0,0,3
 .endm
 
 
+  j _start
+  nop
+  nop
+  nop
+  nop
+  nop
+  nop
+  nop
+
 .global  trap_entry
 trap_entry:
   nop
@@ -54,7 +63,7 @@ trap_entry:
   sw x31, 31*4(sp)
   nop
   readtIrq a0
-  jal ra, irqCpp
+  call irqCpp
   nop
   nop
   nop
@@ -94,7 +103,7 @@ trap_entry:
   nop
   .text
 
-  .align 9 
+
   .globl _start
 _start:
   li  x10,0x00
@@ -113,7 +122,7 @@ bss_loop:
   j bss_loop
 bss_done:
 
-
+/*
 data_init:
   la a0, _sdata
   la a1, _edata
@@ -125,7 +134,7 @@ data_loop:
   add a2,a2,4
   add a0,a0,4
   j data_loop
-data_done:
+data_done:*/
 
 ctors_init:
   la a0, _ctors_start
@@ -142,9 +151,7 @@ ctors_loop:
 ctors_done:
   addi sp,sp,4
 
-
-  jal ra, main
-
+  call main
 infinitLoop:
   j infinitLoop
 

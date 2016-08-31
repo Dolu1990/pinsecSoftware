@@ -19,9 +19,6 @@ extern "C" {
 
 
 int main() {
-	//char *yolo = (char*)malloc (100);
-	char yolo[100];
-	sprintf(yolo,"miaou %d %f",42,3.14f);
 	uartCtrl.setClockDivider(4);
 	uartCtrl.setFrameConfig(8,NONE,ONE);
 	uartCtrl.setReadInterruptEnable(0);

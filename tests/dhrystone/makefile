@@ -1,6 +1,6 @@
 PROJ_NAME=dhrystone
 DEBUG=no
-BENCH=true
+BENCH=yes
 MULDIV=yes
 
 CFLAGS += -g -std=gnu99 -ffast-math -fno-common -funsigned-char -fno-inline -fno-builtin-printf 

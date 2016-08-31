@@ -20,7 +20,7 @@
 		// TODO: Initialize your frame buffer device here
 
 		// TODO: Set the details of the frame buffer
-		int reductBy = 2;
+		int reductBy = 1;
 		int vgaWidth = 640;
 		int vgaHeight = 480;
 		g->g.Width = vgaWidth/reductBy;

@@ -15,15 +15,6 @@ custom0 \rd,0,0,3
 .endm
 
 
-  j _start
-  nop
-  nop
-  nop
-  nop
-  nop
-  nop
-  nop
-
 .global  trap_entry
 trap_entry:
   nop
@@ -64,6 +55,7 @@ trap_entry:
   nop
   readtIrq a0
   call irqCpp
+ // jal ra, irqCpp
   nop
   nop
   nop
@@ -103,7 +95,7 @@ trap_entry:
   nop
   .text
 
-
+  .align 9 
   .globl _start
 _start:
   li  x10,0xFF
@@ -152,6 +144,8 @@ ctors_done:
   addi sp,sp,4
 
   call main
+  //jal ra, main
+
 infinitLoop:
   j infinitLoop
 
