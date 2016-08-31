@@ -1,0 +1,3 @@
+[submodule "tests/ugfx/ugfx_lib"]
+	path = tests/ugfx/ugfx_lib
+	url = https://bitbucket.org/Tectu/ugfx.git
