@@ -73,8 +73,10 @@ int main() {
 			sum += idx;
 		}
 		printf("Sum from 0 to 10000000 = %x%x   ref = 2d7987f0d4c0\n",(uint32_t)(sum >> 32),(uint32_t)(sum));
+		if(sum != 0x2d7987f0d4c0l){
+			while(1);
+		}
 	}
-
 }
 
 
