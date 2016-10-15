@@ -54,7 +54,7 @@ trap_entry:
   sw x31, 31*4(sp)
   nop
   readtIrq a0
-  jal ra, irqCpp
+  call irqCpp
   nop
   nop
   nop
@@ -143,7 +143,7 @@ ctors_done:
   addi sp,sp,4
 
 
-  jal ra, main
+  call main
 
 infinitLoop:
   j infinitLoop
