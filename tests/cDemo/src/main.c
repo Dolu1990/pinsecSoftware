@@ -5,51 +5,81 @@
 
 #define CORE_HZ 100000000
 
-#define GPIO_A_BASE    ((volatile uint32_t*)(0xF0000000))
-#define GPIO_B_BASE    ((volatile uint32_t*)(0xF0001000))
-#define UART_BASE      ((volatile uint32_t*)(0xF0010000))
-#define VGA_BASE       ((volatile uint32_t*)(0xF0030000))
+struct Uart{
+   uint32_t readWrite;
+   uint32_t status;
+   uint32_t clockDivider;
+   uint32_t frameConfig;
+};
 
-#define TIMER_PRESCALER_BASE   ((volatile uint32_t*)(0xF0020000))
-#define TIMER_INTERRUPT_BASE   ((volatile uint32_t*)(0xF0020010))
-#define TIMER_A_BASE   ((volatile uint32_t*)(0xF0020040))
-#define TIMER_B_BASE   ((volatile uint32_t*)(0xF0020050))
-#define TIMER_C_BASE   ((volatile uint32_t*)(0xF0020060))
-#define TIMER_D_BASE   ((volatile uint32_t*)(0xF0020070))
+struct Timer{
+   uint32_t ticksClears;
+   uint32_t limit;
+   uint32_t value;
+};
 
+struct Prescaler{
+   uint32_t limit;
+};
+
+struct Gpio{
+   uint32_t readWrite;
+   uint32_t readOutputBuffer;
+   uint32_t outputEnable;
+};
+
+struct Interrupt{
+   uint32_t status;
+   uint32_t mask;
+};
+
+
+#define gpioA          ((volatile struct Gpio*)(0xF0000000))
+#define gpioB          ((volatile struct Gpio*)(0xF0001000))
+#define uart           ((volatile struct Uart*)(0xF0010000))
+
+#define timerPrescaler ((volatile struct Prescaler*)(0xF0020000))
+#define timerA         ((volatile struct Timer*)(0xF0020040))
+#define timerB         ((volatile struct Timer*)(0xF0020050))
+#define timerC         ((volatile struct Timer*)(0xF0020060))
+#define timerD         ((volatile struct Timer*)(0xF0020070))
+#define timerInterrupt ((volatile struct Interrupt*)(0xF0020010))
 
 void initUart(){
 	//Enable RX interrupts
-	UART_BASE[1] = 2;
+	uart->status = 2;
 	//Set clock divider
-	UART_BASE[2] = CORE_HZ / 115200 / 8;
+	uart->clockDivider = CORE_HZ / 115200 / 8;
 	//Set 8 bits per frame, no parity, one stop bit
-	UART_BASE[3] = 7;
+	uart->frameConfig = 7;
 }
 
 void initTimer(){
 	//Set the prescaler to tick at 10 KHz
-	TIMER_PRESCALER_BASE[0] = CORE_HZ/10000-1;
+	timerPrescaler->limit = CORE_HZ/10000-1;
 
 	//Set the timerA to count up each the prescaler tick, and enable the auto-restart
-	TIMER_A_BASE[0] = 0x00010002;
+	timerA->ticksClears = 0x00010002;
 	//Set the timerA to tick at 0.5 Hz
-	TIMER_A_BASE[1] = 10000*2;
+	timerA->limit = 10000*2-1;
 
 	//Set the timerB to count up each the prescaler tick, and enable the auto-restart
-	TIMER_B_BASE[0] = 0x00010002;
+	timerB->ticksClears = 0x00010002;
 	//Set the timerB to tick at 4 Hz
-	TIMER_B_BASE[1] = 10000/4;
+	timerB->limit = 10000/4-1;
 
 	//Clear all pendings interrupts
-	TIMER_INTERRUPT_BASE[0] = 0xF;
+	timerInterrupt->status = 0xF;
 	//Enable timer A and B interrupt
-	TIMER_INTERRUPT_BASE[1] = 0x3;
+	timerInterrupt->mask = 0x3;
 }
 
 void initGpio(){
+	//Set leds as output pins
+	gpioA->outputEnable = 0xFF;
+
 	//Set leds to zero
-	GPIO_A_BASE[0] = 0;
+	gpioA->readWrite = 0;
 }
 
 void setInterruptMask(uint32_t mask){
@@ -82,21 +112,21 @@ int main() {
 
 void irqC(uint32_t irq){
 	if(irq & 0x20){  //TimerABCD interrupt ?
-		uint32_t pendings = TIMER_INTERRUPT_BASE[0];
+		uint32_t pendings = timerInterrupt->status;
 		if(pendings & 0x1){  //TimerA ?
 			printf("TimerB tick\n");
-			TIMER_INTERRUPT_BASE[0] = 0x1;
+			timerInterrupt->status = 0x1;
 		}
 		if(pendings & 0x2){  //TimerB ?
-			TIMER_INTERRUPT_BASE[0] = 0x2;
-			GPIO_A_BASE[0] = GPIO_A_BASE[1] + 1;
+			timerInterrupt->status = 0x2;
+			gpioA->readWrite = gpioA->readOutputBuffer + 1;
 		}
 	}
 	if(irq & 0x10){  //UART interrupt ?
-		uint32_t rx = UART_BASE[0];
+		uint32_t rx = uart->readWrite;
 		if(rx & 0x00010000){
-			TIMER_A_BASE[2] = 0;
-			UART_BASE[0] = rx & 0xFF;
+			timerA->value = 0;
+			uart->readWrite = rx & 0xFF;
 		}
 	}
 }
@@ -105,19 +135,29 @@ void irqC(uint32_t irq){
 
 //Implement stdio functions to redirect the printf to the uart.
 int close(int fd) {return 0;}
-int fstat(int fd, struct _stat *buffer) {return 0;}
+int fstat(int fd, void *buffer) {return 0;}
 int isatty(int fd) {return 0;}
 long lseek(int fd, long offset, int origin) {return 0;}
 int read(int fd, void *buffer, unsigned int count) {return 0;}
 
 int write(int fd, const void *buffer, unsigned int count) {
 	for (int idx = 0; idx < count; idx++) {
-		while(((UART_BASE[1] >> 16) & 0xFF) == 0);
-		UART_BASE[0] = ((char*) buffer)[idx];
+		while((uart->status & 0x00FF0000) == 0);
+		uart->readWrite = ((char*) buffer)[idx];
 	}
 	return count;
 }
 
+int puts(const char *buffer){
+   int idx;
+   for (idx = 0; buffer[idx] != 0; idx++) {
+	   while((uart->status & 0x00FF0000) == 0);
+	   uart->readWrite = buffer[idx];
+   }
+   while((uart->status & 0x00FF0000) == 0);
+   uart->readWrite = '\n';
+   return idx;
+}
 
 
 
