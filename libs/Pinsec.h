@@ -8,8 +8,11 @@
 #ifndef MAPPING_H_
 #define MAPPING_H_
 
+#ifdef CONFIG_CORE_HZ
+#define CORE_HZ CONFIG_CORE_HZ
+#else
 #define CORE_HZ 100000000
-
+#endif
 
 #define GPIO_A_BASE    ((volatile uint32_t*)(0xF0000000))
 #define GPIO_B_BASE    ((volatile uint32_t*)(0xF0001000))

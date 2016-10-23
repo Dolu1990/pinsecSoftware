@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <Pinsec.h>
 
-#define CORE_HZ 100000000
 
 struct Uart{
    uint32_t readWrite;
