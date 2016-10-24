@@ -15,9 +15,6 @@ INC += -I../../libs/
 
 CFLAGS += -g
 
-LDSCRIPT = ../../resources/linker.ld
+LDSCRIPT ?= ../../resources/linker.ld
 include ../../resources/gcc.mk
 include ../../resources/subproject.mk
-
-
-			

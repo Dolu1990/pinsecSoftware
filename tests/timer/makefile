@@ -13,11 +13,8 @@ INC += -I../../libs/test/
 INC += -I../../libs/timer/
 INC += -I../../libs/interrupt/
 
-LDSCRIPT = ../../resources/linker.ld
+LDSCRIPT ?= ../../resources/linker.ld
 
 
 include ../../resources/gcc.mk
 include ../../resources/subproject.mk
-
-
-			

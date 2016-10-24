@@ -23,9 +23,6 @@ INC += -I../../libs/timer/
 CFLAGS += -g -ffast-math -fno-common -funsigned-char -fno-builtin-printf 
 LDFLAGS += -lm
 
-LDSCRIPT = ../../resources/linker.ld
+LDSCRIPT ?= ../../resources/linker.ld
 include ../../resources/gcc.mk
 include ../../resources/subproject.mk
-
-
-			
