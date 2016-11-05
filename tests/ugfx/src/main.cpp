@@ -13,14 +13,14 @@
 UartCtrl uartCtrl = UartCtrl(UART_BASE);
 TimerCtrl timerA = TimerCtrl(TIMER_A_BASE);
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define RES_X 640
 #define RES_Y 480
 
+__attribute__ ((section (".noinit"))) __attribute__ ((aligned (4*8))) uint16_t vgaFramebuffer[RES_Y][RES_X];
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 int main() {
 	timerA.setLimit(0xFFFFFFFF);
@@ -41,7 +41,7 @@ int main() {
     vgaCtrl.stop();
 	vgaCtrl.setTimings(vga_h640_v480_r60);
 	vgaCtrl.setFrameSize(RES_X*RES_Y*2);
-	vgaCtrl.setFrameBase(0x41000000);
+	vgaCtrl.setFrameBase((uint32_t)vgaFramebuffer);
     vgaCtrl.run();
 
     bubble_main();
