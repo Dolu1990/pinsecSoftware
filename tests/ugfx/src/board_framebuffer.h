@@ -12,7 +12,7 @@
 
 // Uncomment this if your frame buffer device requires flushing
 //#define GDISP_HARDWARE_FLUSH		TRUE
-//__attribute__ ((section (".noinit"))) __attribute__ ((aligned (4*8))) uint16_t vgaFramebuffer[640][480];
+extern uint16_t vgaFramebuffer[480][640];
 
 #ifdef GDISP_DRIVER_VMT
 
@@ -28,7 +28,7 @@
 		g->g.Backlight = 100;
 		g->g.Contrast = 50;
 		fbi->linelen = vgaWidth * sizeof(LLDCOLOR_TYPE);				// bytes per row
-		fbi->pixels = 0x41000000
+		fbi->pixels = (uint32_t)vgaFramebuffer
 				+ (vgaWidth-g->g.Width)/2 * sizeof(LLDCOLOR_TYPE)
 				+ (vgaHeight-g->g.Height)/2*fbi->linelen;												// pointer to the memory frame buffer
 	}
