@@ -69,9 +69,15 @@ void matrix (int16_t xyz[3][N], color_t col[N])
   uint16_t i, s, d;
   uint8_t red,grn,blu;
 
+#ifndef RGB332
 #define RED_COLORS (32)
 #define GREEN_COLORS (64)
 #define BLUE_COLORS (32)
+#else
+#define RED_COLORS (8)
+#define GREEN_COLORS (8)
+#define BLUE_COLORS (4)
+#endif
 
   for (i = 0; i < N; i++)
     {
