@@ -7,12 +7,17 @@
 
 // Set this to your frame buffer pixel format.
 #ifndef GDISP_LLD_PIXELFORMAT
+#ifndef RGB332
 	#define GDISP_LLD_PIXELFORMAT		GDISP_PIXELFORMAT_RGB565
+	extern uint16_t vgaFramebuffer[480][640];
+#else
+	#define GDISP_LLD_PIXELFORMAT		GDISP_PIXELFORMAT_RGB332
+	extern uint8_t vgaFramebuffer[480][640];
+#endif
 #endif
 
 // Uncomment this if your frame buffer device requires flushing
 //#define GDISP_HARDWARE_FLUSH		TRUE
-extern uint16_t vgaFramebuffer[480][640];
 
 #ifdef GDISP_DRIVER_VMT
 
