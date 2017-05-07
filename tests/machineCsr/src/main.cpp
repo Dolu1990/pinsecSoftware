@@ -14,8 +14,7 @@ extern "C" {
 extern void main2();
 
 int main() {
-	main2();
-
+	printf("Miaou !!");
 	TEST_COM_BASE[8] = 0;
 }
 
@@ -24,14 +23,6 @@ void irqCpp(uint32_t irq){
 
 }
 
-
-int     times (){
-  return TEST_COM_BASE[4];
-}
-#include <time.h>
-clock_t	clock(){
-  return times();
-}
 
 #ifdef __cplusplus
 }

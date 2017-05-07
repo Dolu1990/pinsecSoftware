@@ -38,6 +38,12 @@ int *__errno(void) { return &errno; }
 #define INCREMENT 2*SCALE/22		/* INCREMENT = SCALE / sqrt(N) * 2 */
 #define PI2 6.283185307179586476925286766559
 
+//#define N 1024			/* Number of dots */
+//#define SCALE 8192
+//#define INCREMENT 512		/* INCREMENT = SCALE / sqrt(N) * 2 */
+//#define PI2 6.283185307179586476925286766559
+
+
 #define background RGB2COLOR(0,0,0)
 
 uint16_t width, height;

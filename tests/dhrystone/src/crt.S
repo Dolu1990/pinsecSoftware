@@ -1,20 +1,3 @@
-.macro retirq
-custom0 0,0,0,0
-.endm
-
-.macro readtIrq rd
-custom0 \rd,0,0,1
-.endm
-
-.macro writetIrqMask rs
-custom0 0,\rs,0,2
-.endm
-
-.macro readtIrqMask rd
-custom0 \rd,0,0,3
-.endm
-
-
   j _start
   nop
   nop
@@ -62,8 +45,6 @@ trap_entry:
   sw x30, 30*4(sp)
   sw x31, 31*4(sp)
   nop
-  readtIrq a0
-  call irqCpp
   nop
   nop
   nop
@@ -99,17 +80,24 @@ trap_entry:
   lw x30, 30*4(sp)
   lw x31, 31*4(sp)
   addi sp,sp,128
-  retirq
   nop
   .text
 
 
   .globl _start
 _start:
-  li  x10,0x00
-  writetIrqMask x10
 
   la sp, _stack_start
+
+test_init:
+  li a0, 20
+test_loop:
+  nop
+  nop
+  nop
+  addi a0, a0, -1
+  bne a0,x0,test_loop
+test_done:
 
 
 bss_init:

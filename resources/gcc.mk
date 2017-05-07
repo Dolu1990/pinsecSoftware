@@ -1,12 +1,12 @@
 RISCV_NAME = riscv32-unknown-elf
 
 ifeq ($(MULDIV),yes)
-	CFLAGS += -march=RV32IMXcustom 
-	RISCV_PATH=/opt/riscv32im/
+	CFLAGS += -march=rv32im  -mabi=ilp32
+	RISCV_PATH=/opt/rv32im/
 endif
 ifeq ($(MULDIV),no)
-	CFLAGS += -march=RV32IXcustom  
-	RISCV_PATH=/opt/riscv32i/
+	CFLAGS += -march=rv32i   -mabi=ilp32
+	RISCV_PATH=/opt/rv32i/
 endif
 
 

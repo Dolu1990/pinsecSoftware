@@ -5,6 +5,7 @@
 *.asm
 *.map
 *.v
+*~
 
 .cproject
 .project

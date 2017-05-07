@@ -18,7 +18,7 @@ RISCV_OBJCOPY = $(RISCV_PATH)/bin/$(RISCV_NAME)-objcopy
 RISCV_OBJDUMP = $(RISCV_PATH)/bin/$(RISCV_NAME)-objdump
 RISCV_CC=$(RISCV_PATH)/bin/$(RISCV_NAME)-gcc
 
-CFLAGS +=  -m32  -static 
+CFLAGS +=   -static -fstrict-volatile-bitfields
 LDFLAGS += -e_start  -nostartfiles -T $(LDSCRIPT) -Wl,-Map,$(OBJDIR)/$(PROJ_NAME).map
 LDFLAGS += $(RISCV_CLIB)/libc.a $(RISCV_CLIB)/libnosys.a
 
@@ -30,7 +30,7 @@ OBJS := $(OBJS:.S=.o)
 OBJS := $(addprefix $(OBJDIR)/,$(OBJS))
 
 
-all: $(OBJDIR)/$(PROJ_NAME).elf $(OBJDIR)/$(PROJ_NAME).hex $(OBJDIR)/$(PROJ_NAME).bin $(OBJDIR)/$(PROJ_NAME).asm $(OBJDIR)/$(PROJ_NAME).v
+all: $(OBJDIR)/$(PROJ_NAME).elf $(OBJDIR)/$(PROJ_NAME).hex $(OBJDIR)/$(PROJ_NAME).asm $(OBJDIR)/$(PROJ_NAME).v
 
 $(OBJDIR)/%.elf: $(OBJS) | $(OBJDIR)
 	$(RISCV_CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
@@ -67,7 +67,6 @@ $(OBJDIR):
 clean:
 	rm -f $(OBJDIR)/$(PROJ_NAME).elf
 	rm -f $(OBJDIR)/$(PROJ_NAME).hex
-	rm -f $(OBJDIR)/$(PROJ_NAME).bin
 	rm -f $(OBJDIR)/$(PROJ_NAME).map
 	rm -f $(OBJDIR)/$(PROJ_NAME).v
 	rm -f $(OBJDIR)/$(PROJ_NAME).asm
