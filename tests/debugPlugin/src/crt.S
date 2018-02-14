@@ -8,3 +8,5 @@ addi x3, x3, 1
 addi x3, x3, 10
 addi x3, x3, 100
 ebreak
+li x29, 0x80000010
+jalr x29,0(x1)

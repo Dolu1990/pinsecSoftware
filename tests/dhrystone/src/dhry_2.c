@@ -14,7 +14,7 @@
  *
  ****************************************************************************
  */
-//#pragma GCC optimize ("no-inline")
+#pragma GCC optimize ("no-inline")
 #include "dhry.h"
 
 #ifndef REG

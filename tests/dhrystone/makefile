@@ -1,7 +1,7 @@
 PROJ_NAME=dhrystone
 DEBUG=no
 BENCH=yes
-MULDIV=no
+MULDIV=yes
 MMU?=no
 ifeq ($(MMU),yes)
 	CFLAGS += -DMMU
@@ -9,7 +9,7 @@ endif
 
 
 
-CFLAGS += -g -std=gnu99 -ffast-math -fno-common -funsigned-char -fno-inline -fno-builtin-printf 
+CFLAGS += -g -std=gnu99 -ffast-math -fno-common -funsigned-char -fno-builtin-printf 
 LDFLAGS += -lc
 
 CFLAGS +=  -DPREALLOCATE=1 -DHOST_DEBUG=0 -DMSC_CLOCK 

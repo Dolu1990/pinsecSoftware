@@ -1,7 +1,7 @@
 
 
 ifeq ($(DEBUG),yes)
-	CFLAGS +=-g -O0 
+	CFLAGS +=-g3 -O0 
 endif
 
 ifeq ($(DEBUG),no)
@@ -12,21 +12,30 @@ ifeq ($(BENCH),yes)
 	CFLAGS += -fno-inline  
 endif
 
+ifeq ($(RISCV_MULTI_TARGET_PACK),yes)
+	RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/$(MARCH)/$(MABI)/
+else
+	RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/
+endif
 
-RISCV_CLIB=$(RISCV_PATH)$(RISCV_NAME)/lib/
+
+
+
+
 RISCV_OBJCOPY = $(RISCV_PATH)/bin/$(RISCV_NAME)-objcopy
 RISCV_OBJDUMP = $(RISCV_PATH)/bin/$(RISCV_NAME)-objdump
 RISCV_CC=$(RISCV_PATH)/bin/$(RISCV_NAME)-gcc
 
 CFLAGS +=   -static -fstrict-volatile-bitfields
-LDFLAGS += -e_start  -nostartfiles -T $(LDSCRIPT) -Wl,-Map,$(OBJDIR)/$(PROJ_NAME).map
+LDFLAGS += -e_start  -nostartfiles -T $(LDSCRIPT) -Wl,-Map,$(OBJDIR)/$(PROJ_NAME).map -Wl,--print-memory-usag
 LDFLAGS += $(RISCV_CLIB)/libc.a $(RISCV_CLIB)/libnosys.a
 
 OBJDIR = build
-OBJS :=  $(SRCS)
+OBJS := $(SRCS)
 OBJS := $(OBJS:.c=.o)
 OBJS := $(OBJS:.cpp=.o)
 OBJS := $(OBJS:.S=.o)
+OBJS := $(OBJS:..=miaou)
 OBJS := $(addprefix $(OBJDIR)/,$(OBJS))
 
 

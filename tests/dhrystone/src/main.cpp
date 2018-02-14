@@ -1,3 +1,4 @@
+#pragma GCC optimize ("no-inline")
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>

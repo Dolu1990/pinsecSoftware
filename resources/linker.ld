@@ -18,7 +18,7 @@ OUTPUT_ARCH( "riscv" )
 /*----------------------------------------------------------------------*/
 
 MEMORY {
-  onChipRam (W!RX)/*(RX)*/ : ORIGIN = 0x00000000, LENGTH = 96K
+  onChipRam (W!RX)/*(RX)*/ : ORIGIN = 0x80000000, LENGTH = 256K
   sdram (W!RX) : ORIGIN = 0x40000000, LENGTH = 64M
 }
 _stack_size = 2k;
@@ -57,7 +57,7 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
     PROVIDE(etext = .);   
  		_fini = . ;
 		*(.fini)  
-   } > sdram
+   } > onChipRam
 
   /* .ctors => Contains a list of global constructor pointers */
   .ctors  : {
@@ -67,7 +67,7 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
     KEEP(*(.init_array*))
     KEEP (*(SORT(.ctors.*)))
     KEEP (*(.ctors))
-  } > sdram
+  } > onChipRam
   _ctors_end = _ctors_start + SIZEOF(.ctors);
   
   _copy_section = _ctors_start + SIZEOF(.ctors);
@@ -81,7 +81,7 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
       *(.gnu.linkonce.d.*)
       . = ALIGN(4);
       _edata = .;
-   } > sdram
+   } > onChipRam
 
 
   .bss (NOLOAD) : {
@@ -94,13 +94,13 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
       *(COMMON)
       . = ALIGN(4);        
       _bss_end = .;
-  } > sdram
+  } > onChipRam
   
   .noinit (NOLOAD) : {
       . = ALIGN(4);
       *(.noinit .noinit.*)
       . = ALIGN(4);    
-  } > sdram
+  } > onChipRam
 
 
 	._user_heap (NOLOAD):
@@ -112,7 +112,7 @@ SECTIONS /*TODO don't initialize useless things,  restore literal loading that u
 		. = . + _heap_size;
 		. = ALIGN(8);
 		PROVIDE ( _heap_end = .);
-	} > sdram
+	} > onChipRam
 	
 	._stack (NOLOAD):
 	{
